@@ -425,7 +425,7 @@ function sortByAsc(arr) {
   let indexMim = 0;
   let min = arr[0];
   let buff = 0;
-  for (let i = 1; i < sortarr.length - 1; i += 1) {
+  for (let i = 1; i < sortarr.length; i += 1) {
     for (let j = i; j < sortarr.length; j += 1) {
       if (sortarr[j] < min) {
         min = sortarr[j];
