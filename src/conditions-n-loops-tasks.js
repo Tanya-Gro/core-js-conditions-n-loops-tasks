@@ -496,24 +496,28 @@ function shuffleChar(str, iterations) {
  * @returns {number} The nearest larger number, or original number if none exists.
  */
 function getNearestBigger(number) {
-  const inputData = number.toString().split('');
-  let i = 0;
-  let restNumber;
+  const inputData = [...String(number)];
 
-  for (i = inputData.length - 2; i >= 0; i -= 1) {
+  for (let i = inputData.length - 2; i >= 0; i -= 1) {
     if (inputData[i] < inputData[i + 1]) {
-      let d = i + 1;
-      for (let j = i + 2; j < inputData.length; j += 1)
-        if (inputData[d] > inputData[j] && inputData[j] > inputData[i]) d = j;
-      restNumber = inputData[d];
-      inputData[d] = inputData[i];
-      inputData[i] = restNumber;
-      return Number(
-        [
-          ...inputData.slice(0, i + 1),
-          ...inputData.slice(i + 1).sort((a, b) => a - b),
-        ].join('')
-      );
+      let leftPart = '';
+      const rightPart1 = [];
+      const rightPart2 = [];
+
+      for (let j = 0; j < inputData.length; j += 1) {
+        if (j < i) leftPart += inputData[j];
+        if (j > i && inputData[j] <= inputData[i])
+          rightPart1.push(inputData[j]);
+        if (j > i && inputData[j] > inputData[i]) rightPart2.push(inputData[j]);
+      }
+      rightPart1.sort((a, b) => a - b);
+      rightPart2.sort((a, b) => a - b);
+      rightPart1.unshift(rightPart2[0]);
+      rightPart1.push(inputData[i]);
+      rightPart2.shift();
+
+      return Number(`
+        ${leftPart}${rightPart1.join('')}${rightPart2.join('')}`);
     }
   }
   return number;
